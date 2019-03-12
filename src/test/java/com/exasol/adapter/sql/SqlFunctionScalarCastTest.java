@@ -34,13 +34,13 @@ class SqlFunctionScalarCastTest {
     }
 
     @Test
-    void testGetArgumentsEmptyListThrowsException() {
+    void testGetArgumentsWithNullAsArgumentList() {
         assertThrows(IllegalArgumentException.class,
               () -> this.sqlFunctionScalarCast = new SqlFunctionScalarCast(this.dataType, null));
     }
 
     @Test
-    void getDataType() {
+    void testGetDataType() {
         assertThat(this.sqlFunctionScalarCast.getDataType(), equalTo(this.dataType));
     }
 
@@ -61,10 +61,8 @@ class SqlFunctionScalarCastTest {
 
     @Test
     void testAccept() throws AdapterException {
-        final SqlNodeVisitor<SqlLiteralNull> visitor = mock(SqlNodeVisitor.class);
-        final SqlLiteralNull sqlLiteralNull = new SqlLiteralNull();
-        when(visitor.visit(this.sqlFunctionScalarCast)).thenReturn(sqlLiteralNull);
-        assertThat(this.sqlFunctionScalarCast.accept(visitor), equalTo(sqlLiteralNull));
+        final SqlNodeVisitor<SqlFunctionScalarCast> visitor = mock(SqlNodeVisitor.class);
+        when(visitor.visit(this.sqlFunctionScalarCast)).thenReturn(this.sqlFunctionScalarCast);
+        assertThat(this.sqlFunctionScalarCast.accept(visitor), equalTo(this.sqlFunctionScalarCast));
     }
-
 }
